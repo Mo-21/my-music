@@ -26,6 +26,9 @@ class Customer(models.Model):
     def last_name(self):
         return self.user.last_name
 
+    class Meta:
+        ordering = ['user__first_name', 'user__last_name']
+
 
 class Post(models.Model):
     content = models.TextField()
