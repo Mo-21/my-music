@@ -1,13 +1,13 @@
 from rest_framework.viewsets import ModelViewSet
-from .serializers import PersonSerializer, PostSerializer
-from .models import Person, Post
+from .serializers import CustomerSerializer, PostSerializer
+from .models import Customer, Post
 
 # TODO: List only accessible for admins
 
 
-class PersonViewSet(ModelViewSet):
-    queryset = Person.objects.all()
-    serializer_class = PersonSerializer
+class CustomerViewSet(ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
 
 
 class PostViewSet(ModelViewSet):

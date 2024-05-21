@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 
-class Person(models.Model):
+class Customer(models.Model):
     MEMBERSHIP_REGULAR = 'R'
     MEMBERSHIP_PRIME = 'P'
 
@@ -20,19 +20,19 @@ class Person(models.Model):
 
 class Post(models.Model):
     content = models.TextField()
-    user = models.ForeignKey(Person, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Like(models.Model):
-    user = models.ForeignKey(Person, on_delete=models.CASCADE)
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Follower(models.Model):
     follower_user = models.ForeignKey(
-        Person, on_delete=models.CASCADE, related_name='followers')
+        Customer, on_delete=models.CASCADE, related_name='followers')
     following_user = models.ForeignKey(
-        Person, on_delete=models.CASCADE, related_name='followings')
+        Customer, on_delete=models.CASCADE, related_name='followings')
     created_at = models.DateTimeField(auto_now_add=True)
