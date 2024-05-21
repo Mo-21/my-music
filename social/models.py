@@ -22,3 +22,15 @@ class Post(models.Model):
     content = models.TextField()
     user = models.ForeignKey(Person, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Like(models.Model):
+    user = models.ForeignKey(Person, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Follower(models.Model):
+    follower_user = models.ForeignKey(Person, on_delete=models.CASCADE)
+    following_user = models.ForeignKey(Person, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
