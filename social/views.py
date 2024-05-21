@@ -1,9 +1,15 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
-from .serializers import PersonSerializer
-from .models import Person
+from .serializers import PersonSerializer, PostSerializer
+from .models import Person, Post
+
+# TODO: List only accessible for admins
 
 
 class PersonViewSet(ModelViewSet):
-    serializer_class = PersonSerializer
     queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+
+
+class PostViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
