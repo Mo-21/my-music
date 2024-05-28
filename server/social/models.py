@@ -18,19 +18,10 @@ class Customer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
-        return f'{self.user.first_name} {self.user.last_name}'
-
 
 class Post(models.Model):
     content = models.TextField()
     user = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class Like(models.Model):
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
