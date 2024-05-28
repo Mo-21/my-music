@@ -6,7 +6,7 @@ from .models import Customer, Post
 
 
 class CustomerViewSet(ModelViewSet):
-    queryset = Customer.objects.all()
+    queryset = Customer.objects.prefetch_related('user').all()
     serializer_class = CustomerSerializer
 
 
