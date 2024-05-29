@@ -1,8 +1,6 @@
 from rest_framework import status
 from django.forms.models import model_to_dict
-from django.conf import settings
-from model_bakery import baker
-from social.models import Customer
+from django.urls import reverse
 import pytest
 
 
@@ -27,16 +25,16 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_200_OK
 
-    def test_create_customer_return_401_if_not_auth(self, api_client, create_customer_model):
-        customer = create_customer_model()
+    def test_create_customer_return_401_if_not_auth(self, api_client, create_customer):
+        customer = create_customer()
 
         response = api_client.post(
             '/social/customers/', model_to_dict(customer))
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_create_customer_return_201_if_auth(self, api_client, create_customer_model, authenticate_user):
-        customer = create_customer_model()
+    def test_create_customer_return_201_if_auth(self, api_client, create_customer, authenticate_user):
+        customer = create_customer()
 
         authenticate_user()
         response = api_client.post(
@@ -44,17 +42,72 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_get_customer_profile_return_401_if_not_auth(self, api_client, create_customer_model):
-        customer = create_customer_model()
+    def test_get_customer_profile_return_401_if_not_auth(self, api_client, create_customer):
+        customer = create_customer()
 
         response = api_client.get(f'/social/customers/{customer.id}/')
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_get_customer_profile_return_200_if_auth(self, api_client, create_customer_model, authenticate_user):
-        customer = create_customer_model()
+    def test_get_customer_profile_return_200_if_auth(self, api_client, create_customer, authenticate_user):
+        customer = create_customer()
 
         authenticate_user()
         response = api_client.get(f'/social/customers/{customer.id}/')
 
         assert response.status_code == status.HTTP_200_OK
+
+    def test_update_customer_return_401_if_not_auth(self, api_client, create_customer):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+        data = {'phone': '987654321'}
+
+        response = api_client.patch(url, data)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_update_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer, authenticate_user):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+        data = {'phone': '987654321'}
+
+        authenticate_user()
+        response = api_client.patch(url, data)
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_update_customer_return_200_if_same_user(self, api_client, create_customer, authenticate_user):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+        data = {'phone': '987654321'}
+
+        api_client.force_authenticate(user=customer.user)
+        response = api_client.patch(url, data)
+
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_delete_customer_return_401_if_not_auth(self, api_client, create_customer):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+
+        response = api_client.delete(url)
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_delete_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer, authenticate_user):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+
+        authenticate_user()
+        response = api_client.delete(url)
+
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_delete_customer_return_204_if_same_user(self, api_client, create_customer):
+        customer = create_customer()
+        url = reverse('customer-detail', kwargs={'pk': customer.id})
+
+        api_client.force_authenticate(user=customer.user)
+        response = api_client.delete(url)
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
