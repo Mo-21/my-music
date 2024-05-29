@@ -1,8 +1,9 @@
 from rest_framework.routers import DefaultRouter, SimpleRouter
-from .views import CustomerViewSet
+from . import views
 
 
 router = DefaultRouter()
-router.register('customers', CustomerViewSet)
+router.register('customers', views.CustomerViewSet)
+router.register('posts', views.PostViewSet)
 
 urlpatterns = router.urls
