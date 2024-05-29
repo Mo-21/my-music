@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from .permissions import IsOwnerOrReadOnly
 from .serializers import CustomerSerializer, PostSerializer
 from .models import Customer, Post
 
@@ -9,9 +10,15 @@ from .models import Customer, Post
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [IsAdminUser]
 
-    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            return [IsOwnerOrReadOnly()]
+        elif self.action in ['retrieve', 'me']:
+            return [IsAuthenticated()]
+        return [IsAdminUser()]
+
+    @action(detail=False, methods=['GET', 'PATCH'], permission_classes=[IsAuthenticated])
     def me(self, request):
         customer = Customer.objects.get(
             user_id=request.user.id
@@ -19,7 +26,7 @@ class CustomerViewSet(ModelViewSet):
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
             return Response(serializer.data)
-        elif request.method == 'PUT':
+        elif request.method == 'PATCH':
             serializer = CustomerSerializer(customer, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
