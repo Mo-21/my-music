@@ -8,7 +8,7 @@ from .models import Customer, Post
 
 
 class CustomerViewSet(ModelViewSet):
-    queryset = Customer.objects.all()
+    queryset = Customer.objects.select_related('user').all()
     serializer_class = CustomerSerializer
 
     def get_permissions(self):
@@ -34,5 +34,5 @@ class CustomerViewSet(ModelViewSet):
 
 
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.select_related('author__user').all()
     serializer_class = PostSerializer
