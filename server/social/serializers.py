@@ -13,7 +13,7 @@ class LocalUserSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
-    user = LocalUserSerializer()
+    user = LocalUserSerializer(read_only=True)
 
     class Meta:
         model = Customer
@@ -21,7 +21,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = CustomerSerializer()
+    author = CustomerSerializer(read_only=True)
 
     class Meta:
         model = Post
