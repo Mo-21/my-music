@@ -21,7 +21,7 @@ class Customer(models.Model):
 
 class Post(models.Model):
     content = models.TextField()
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    author = models.ForeignKey(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
