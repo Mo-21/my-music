@@ -1,10 +1,12 @@
+from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .permissions import IsOwnerOrReadOnly
+from .pagination import CustomPagination
 from .serializers import CustomerSerializer, PostSerializer
-from .models import Customer, Post
+from .models import Customer, Post, Follower
 
 
 class CustomerViewSet(ModelViewSet):
@@ -20,7 +22,7 @@ class CustomerViewSet(ModelViewSet):
 
     @action(detail=False, methods=['GET', 'PATCH'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        customer = Customer.objects.get(
+        customer = Customer.objects.select_related('user').get(
             user_id=request.user.id
         )
         if request.method == 'GET':
@@ -34,5 +36,21 @@ class CustomerViewSet(ModelViewSet):
 
 
 class PostViewSet(ModelViewSet):
-    queryset = Post.objects.select_related('author__user').all()
     serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Post.objects.select_related('author__user').all()
+
+        customer = self.request.user.customer
+        following_ids = Follower.objects.filter(
+            follower_user=customer).values_list('following_user_id', flat=True)
+
+        return Post.objects.select_related('author__user').filter(
+            Q(author=customer) | Q(author_id__in=following_ids)
+        )
+
+    def get_serializer_context(self):
+        return {'author_id': self.request.user.customer.id}
