@@ -1,7 +1,7 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested import routers
 from . import views
 
-router = DefaultRouter()
+router = routers.DefaultRouter()
 
 router.register('genres', views.GenreMixin)
 router.register('artists', views.ArtistMixin)
@@ -13,4 +13,11 @@ router.register(
     basename='songs_with_new_artist'
 )
 
-urlpatterns = router.urls
+playlist_router = routers.NestedDefaultRouter(
+    router, 'playlists', lookup='playlist'
+)
+playlist_router.register(
+    'items', views.PlaylistItemViewSet, basename='playlist-items'
+)
+
+urlpatterns = router.urls + playlist_router.urls
