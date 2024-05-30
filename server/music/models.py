@@ -21,6 +21,8 @@ class Song(models.Model):
                             FileExtensionValidator(allowed_extensions=['mp3', 'wav'])])
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
 
 
