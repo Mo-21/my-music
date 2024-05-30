@@ -29,3 +29,19 @@ class SongSerializer(serializers.ModelSerializer):
         )
 
         return song
+
+
+class SongWithNewArtistSerializer(SongSerializer):
+    artist = ArtistSerializer()
+
+    def create(self, validated_data):
+        artist_data = validated_data.pop('artist')
+        artist = Artist.objects.create(**artist_data)
+
+        song = Song.objects.create(
+            author_id=self.context['user_id'],
+            artist=artist,
+            **validated_data
+        )
+
+        return song
