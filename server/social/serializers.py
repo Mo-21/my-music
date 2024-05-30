@@ -41,4 +41,6 @@ class FollowerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         follower_user_id = self.context['follower_user_id']
+        if follower_user_id == validated_data['following_user'].id:
+            raise serializers.ValidationError('You cannot follow yourself')
         return Follower.objects.create(follower_user_id=follower_user_id, **validated_data)
