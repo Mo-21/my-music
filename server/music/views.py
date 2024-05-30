@@ -25,6 +25,7 @@ class SongViewSet(ModelViewSet):
         'genre').select_related('artist').all()
     serializer_class = SongSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = [CustomPagination]
 
     def get_serializer_context(self):
         user = self.request.user
