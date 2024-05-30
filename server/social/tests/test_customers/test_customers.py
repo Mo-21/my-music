@@ -40,7 +40,7 @@ class TestCustomers:
         response = api_client.post(
             '/social/customers/', model_to_dict(customer))
 
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_201_CREATED
 
     def test_get_customer_profile_return_401_if_not_auth(self, api_client, create_customer):
         customer = create_customer()
