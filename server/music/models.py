@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.validators import FileExtensionValidator
 
 
 class Genre(models.Model):
@@ -16,6 +17,8 @@ class Artist(models.Model):
 class Song(models.Model):
     title = models.CharField(max_length=255)
     duration = models.SmallIntegerField()
+    item = models.FileField(upload_to='music/songs', validators=[
+                            FileExtensionValidator(allowed_extensions=['mp3', 'wav'])])
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
