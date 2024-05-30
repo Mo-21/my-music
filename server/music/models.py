@@ -31,6 +31,9 @@ class Song(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self) -> str:
+        return self.title
+
 
 class Playlist(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -38,7 +41,13 @@ class Playlist(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class PlaylistItem(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.PROTECT)
     song = models.ForeignKey(Song, on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['playlist', 'song']]
