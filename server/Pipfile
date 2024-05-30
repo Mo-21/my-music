@@ -12,6 +12,7 @@ djoser = "*"
 djangorestframework-simplejwt = "*"
 pillow = "*"
 migrate = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 pytest = "*"
