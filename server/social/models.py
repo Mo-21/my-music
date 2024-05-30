@@ -14,6 +14,8 @@ class Customer(models.Model):
     birthdate = models.DateField(null=True)
     membership_status = models.CharField(
         max_length=1, default=MEMBERSHIP_REGULAR, choices=MEMBERSHIP_CHOICES)
+    profile_image = models.ImageField(
+        upload_to='social/images', default='social/images/default.png')
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

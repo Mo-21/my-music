@@ -17,7 +17,8 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Customer
-        fields = ['id', 'user', 'phone', 'birthdate', 'membership_status']
+        fields = ['id', 'user', 'profile_image',
+                  'phone', 'birthdate', 'membership_status']
 
 
 class PostSerializer(serializers.ModelSerializer):
