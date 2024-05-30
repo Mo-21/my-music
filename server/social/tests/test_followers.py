@@ -41,11 +41,13 @@ class TestFollower:
     def test_unfollow_user_return_204_if_user_is_auth_and_data_is_valid(self, api_client, create_customer):
         customer1 = create_customer(is_authenticated=True)
         customer2 = create_customer(is_authenticated=True)
-        api_client.post(
+        relation = api_client.post(
             '/social/followers/',
             data={'following_user': customer1.id}
         )
+        data = relation.json()
+        relation_id = data['id']
 
-        response = api_client.delete(f'/social/followers/{customer1.id}/')
+        response = api_client.delete(f'/social/followers/{relation_id}/')
 
         assert response.status_code == status.HTTP_204_NO_CONTENT
