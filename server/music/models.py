@@ -4,14 +4,20 @@ from django.core.validators import FileExtensionValidator
 
 
 class Genre(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Artist(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     bio = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Song(models.Model):
@@ -27,7 +33,7 @@ class Song(models.Model):
 
 
 class Playlist(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     created_at = models.DateTimeField(auto_now=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
