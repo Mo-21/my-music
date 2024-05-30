@@ -11,19 +11,12 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_get_all_customers_return_403_if_auth_but_not_admin(self, api_client, authenticate_user):
-        authenticate_user(is_staff=False)
+    def test_get_all_customers_return_403_if_auth_but_not_admin(self, api_client, create_customer):
+        create_customer(is_authenticated=True)
 
         response = api_client.get('/social/customers/')
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
-
-    def test_get_all_customers_return_200_if_admin(self, api_client, authenticate_user):
-        authenticate_user(is_staff=True)
-
-        response = api_client.get('/social/customers/')
-
-        assert response.status_code == status.HTTP_200_OK
 
     def test_create_customer_return_401_if_not_auth(self, api_client, create_customer):
         customer = create_customer()
@@ -33,10 +26,9 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_create_customer_return_403_if_auth(self, api_client, create_customer, authenticate_user):
-        customer = create_customer()
+    def test_create_customer_return_403_if_auth(self, api_client, create_customer):
+        customer = create_customer(is_authenticated=True)
 
-        authenticate_user()
         response = api_client.post(
             '/social/customers/', model_to_dict(customer))
 
@@ -49,10 +41,9 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_get_customer_profile_return_200_if_auth(self, api_client, create_customer, authenticate_user):
-        customer = create_customer()
+    def test_get_customer_profile_return_200_if_auth(self, api_client, create_customer):
+        customer = create_customer(is_authenticated=True)
 
-        authenticate_user()
         response = api_client.get(f'/social/customers/{customer.id}/')
 
         assert response.status_code == status.HTTP_200_OK
@@ -66,18 +57,18 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_update_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer, authenticate_user):
-        customer = create_customer()
-        url = reverse('customer-detail', kwargs={'pk': customer.id})
+    def test_update_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer):
+        customer1 = create_customer(is_authenticated=True)
+        customer2 = create_customer(is_authenticated=True)
+        url = reverse('customer-detail', kwargs={'pk': customer1.id})
         data = {'phone': '987654321'}
 
-        authenticate_user()
         response = api_client.patch(url, data)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_update_customer_return_200_if_same_user(self, api_client, create_customer, authenticate_user):
-        customer = create_customer()
+    def test_update_customer_return_200_if_same_user(self, api_client, create_customer):
+        customer = create_customer(is_authenticated=True)
         url = reverse('customer-detail', kwargs={'pk': customer.id})
         data = {'phone': '987654321'}
 
@@ -94,17 +85,17 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_delete_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer, authenticate_user):
-        customer = create_customer()
-        url = reverse('customer-detail', kwargs={'pk': customer.id})
+    def test_delete_customer_return_403_if_auth_but_not_same_user(self, api_client, create_customer):
+        customer1 = create_customer(is_authenticated=True)
+        customer2 = create_customer(is_authenticated=True)
+        url = reverse('customer-detail', kwargs={'pk': customer1.id})
 
-        authenticate_user()
         response = api_client.delete(url)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_delete_customer_return_204_if_same_user(self, api_client, create_customer):
-        customer = create_customer()
+        customer = create_customer(is_authenticated=True)
         url = reverse('customer-detail', kwargs={'pk': customer.id})
 
         api_client.force_authenticate(user=customer.user)

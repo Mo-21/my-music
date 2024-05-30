@@ -13,6 +13,13 @@ def api_client():
 
 
 @pytest.fixture
+def authenticate_user(api_client):
+    def do_authenticate_user(user):
+        api_client.force_authenticate(user=user)
+    return do_authenticate_user
+
+
+@pytest.fixture
 def create_customer(authenticate_user):
     def do_create_customer(is_authenticated=False):
         user = baker.make(User)
@@ -31,10 +38,3 @@ def create_post(create_customer):
         post = baker.make(Post, author=customer)
         return post
     return do_create_post
-
-
-@pytest.fixture
-def authenticate_user(api_client):
-    def do_authenticate_user(user):
-        api_client.force_authenticate(user=user)
-    return do_authenticate_user
