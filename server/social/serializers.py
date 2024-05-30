@@ -26,3 +26,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'content', 'author', 'created_at']
+
+    def create(self, validated_data):
+        author_id = self.context['author_id']
+        return Post.objects.create(author_id=author_id, **validated_data)
