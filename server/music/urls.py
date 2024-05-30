@@ -3,7 +3,7 @@ from . import views
 
 router = DefaultRouter()
 
-router.register('genres', views.GenreViewSet)
-router.register('artists', views.ArtistViewSet)
+router.register('genres', views.GenreMixin)
+router.register('artists', views.ArtistMixin)
 
 urlpatterns = router.urls

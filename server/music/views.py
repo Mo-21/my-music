@@ -4,11 +4,15 @@ from .serializers import GenreSerializer, ArtistSerializer
 from .models import Genre, Artist
 
 
-class GenreViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class GenreMixin(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
 
 
-class ArtistViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class ArtistMixin(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
+
+
+class SongViewSet(ModelViewSet):
+    pass
