@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Genre, Artist, Song
+from .models import Genre, Artist, Song, Playlist
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -45,3 +45,18 @@ class SongWithNewArtistSerializer(SongSerializer):
         )
 
         return song
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ['name', 'created_at', 'user']
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        playlist = Playlist.objects.create(
+            user_id=self.context['user_id'],
+            **validated_data
+        )
+
+        return playlist

@@ -1,8 +1,9 @@
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.exceptions import NotAuthenticated
-from .serializers import GenreSerializer, ArtistSerializer, SongSerializer, SongWithNewArtistSerializer
-from .models import Genre, Artist, Song
+from .models import Genre, Artist, Song, Playlist
+from .serializers import (GenreSerializer, ArtistSerializer, SongSerializer, SongWithNewArtistSerializer,
+                          PlaylistSerializer)
 
 
 class GenreMixin(ListModelMixin, RetrieveModelMixin, GenericViewSet):
@@ -31,6 +32,19 @@ class SongViewSet(ModelViewSet):
 
 class SongWithNewArtistMixin(CreateModelMixin, GenericViewSet):
     serializer_class = SongWithNewArtistSerializer
+
+    def get_serializer_context(self):
+        user = self.request.user
+
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+
+        return {'user_id': user.id}
+
+
+class PlaylistViewSet(ModelViewSet):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistSerializer
 
     def get_serializer_context(self):
         user = self.request.user

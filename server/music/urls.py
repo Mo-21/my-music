@@ -5,6 +5,7 @@ router = DefaultRouter()
 
 router.register('genres', views.GenreMixin)
 router.register('artists', views.ArtistMixin)
+router.register('playlists', views.PlaylistViewSet)
 router.register('songs', views.SongViewSet, basename='songs')
 router.register(
     'songs_with_new_artist',
