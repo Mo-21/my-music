@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.exceptions import NotAuthenticated
 from .permissions import IsOwnerOrReadOnly
 from .pagination import CustomPagination
-from .serializers import CustomerSerializer, PostSerializer
+from .serializers import CustomerSerializer, PostSerializer, FollowerSerializer
 from .models import Customer, Post, Follower
 
 
@@ -64,3 +64,23 @@ class PostViewSet(ModelViewSet):
             raise NotAuthenticated('User is not authenticated')
 
         return {'author_id': user.customer.id}
+
+
+class FollowerViewSet(ModelViewSet):
+    queryset = Follower.objects.all()
+    serializer_class = FollowerSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get', 'post', 'delete']
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+
+        return Follower.objects.filter(follower_user=user.customer)
+
+    def get_serializer_context(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+        return {'follower_user_id': user.customer.id}

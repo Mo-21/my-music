@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from .models import Customer, Post
+from .models import Customer, Post, Follower
 
 
 User = get_user_model()
@@ -30,3 +30,15 @@ class PostSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         author_id = self.context['author_id']
         return Post.objects.create(author_id=author_id, **validated_data)
+
+
+class FollowerSerializer(serializers.ModelSerializer):
+    follower_user = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Follower
+        fields = ['id', 'follower_user', 'following_user']
+
+    def create(self, validated_data):
+        follower_user_id = self.context['follower_user_id']
+        return Follower.objects.create(follower_user_id=follower_user_id, **validated_data)
