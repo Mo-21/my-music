@@ -27,6 +27,8 @@ class Customer(models.Model):
 class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    image = models.ImageField(
+        upload_to='social/posts', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
 
