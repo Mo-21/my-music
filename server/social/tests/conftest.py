@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 from rest_framework.test import APIClient
 from model_bakery import baker
 from social.models import Customer, Post
@@ -38,3 +39,12 @@ def create_post(create_customer):
         post = baker.make(Post, author=customer)
         return post
     return do_create_post
+
+
+@pytest.fixture
+def post_to_dict():
+    def do_post_to_dict(post):
+        post_dict = model_to_dict(post)
+        post_dict['image'] = ''
+        return post_dict
+    return do_post_to_dict

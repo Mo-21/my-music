@@ -17,45 +17,50 @@ class TestPosts:
 
         assert response.status_code == status.HTTP_200_OK
 
-    def test_create_post_return_401_if_not_auth(self, api_client, create_post):
+    def test_create_post_return_401_if_not_auth(self, api_client, create_post, post_to_dict):
         post = create_post(is_authenticated=False)
+        post_dict = post_to_dict(post)
 
-        response = api_client.post('/social/posts/', model_to_dict(post))
+        response = api_client.post('/social/posts/', post_dict)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_create_post_return_201_if_auth(self, api_client, create_post):
+    def test_create_post_return_201_if_auth(self, api_client, create_post, post_to_dict):
         post = create_post(is_authenticated=True)
+        post_dict = post_to_dict(post)
 
-        response = api_client.post('/social/posts/', model_to_dict(post))
+        response = api_client.post('/social/posts/', post_dict)
 
         assert response.status_code == status.HTTP_201_CREATED
 
-    def test_update_post_return_401_if_not_auth(self, api_client, create_post):
+    def test_update_post_return_401_if_not_auth(self, api_client, create_post, post_to_dict):
         post = create_post(is_authenticated=False)
+        post_dict = post_to_dict(post)
 
         response = api_client.patch(
-            f'/social/posts/{post.id}/', model_to_dict(post))
+            f'/social/posts/{post.id}/', post_dict)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_update_post_return_404_if_not_owner_and_not_follower(self, api_client, create_post, create_customer):
+    def test_update_post_return_404_if_not_owner_and_not_follower(self, api_client, create_post, post_to_dict, create_customer):
         # users cannot even access posts from people they don't follow
         post = create_post(is_authenticated=True)
         customer = create_customer(is_authenticated=True)
-        api_client.post('/social/posts/', model_to_dict(post))
+        post_dict = post_to_dict(post)
+        api_client.post('/social/posts/', post_dict)
 
         response = api_client.patch(
-            f'/social/posts/{post.id}/', model_to_dict(post))
+            f'/social/posts/{post.id}/', post_dict)
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_update_post_return_200_if_owner(self, api_client, create_post):
+    def test_update_post_return_200_if_owner(self, api_client, create_post, post_to_dict):
         post = create_post(is_authenticated=True)
-        api_client.post('/social/posts/', model_to_dict(post))
+        post_dict = post_to_dict(post)
+        api_client.post('/social/posts/', post_dict)
 
         response = api_client.patch(
-            f'/social/posts/{post.id}/', model_to_dict(post))
+            f'/social/posts/{post.id}/', post_dict)
 
         assert response.status_code == status.HTTP_200_OK
 
@@ -66,18 +71,20 @@ class TestPosts:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_delete_post_return_404_if_not_owner_and_not_follower(self, api_client, create_post, create_customer):
+    def test_delete_post_return_404_if_not_owner_and_not_follower(self, api_client, create_post, post_to_dict, create_customer):
         post = create_post(is_authenticated=True)
         customer = create_customer(is_authenticated=True)
-        api_client.post('/social/posts/', model_to_dict(post))
+        post_dict = post_to_dict(post)
+        api_client.post('/social/posts/', post_dict)
 
         response = api_client.delete(f'/social/posts/{post.id}/')
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_delete_post_return_204_if_owner(self, api_client, create_post):
+    def test_delete_post_return_204_if_owner(self, api_client, create_post, post_to_dict):
         post = create_post(is_authenticated=True)
-        api_client.post('/social/posts/', model_to_dict(post))
+        post_dict = post_to_dict(post)
+        api_client.post('/social/posts/', post_dict)
 
         response = api_client.delete(f'/social/posts/{post.id}/')
 
