@@ -33,14 +33,14 @@ class TestCustomers:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_create_customer_return_201_if_auth(self, api_client, create_customer, authenticate_user):
+    def test_create_customer_return_403_if_auth(self, api_client, create_customer, authenticate_user):
         customer = create_customer()
 
         authenticate_user()
         response = api_client.post(
             '/social/customers/', model_to_dict(customer))
 
-        assert response.status_code == status.HTTP_201_CREATED
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_get_customer_profile_return_401_if_not_auth(self, api_client, create_customer):
         customer = create_customer()
