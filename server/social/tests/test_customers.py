@@ -53,7 +53,7 @@ class TestCustomers:
         url = reverse('customer-detail', kwargs={'pk': customer.id})
         data = {'phone': '987654321'}
 
-        response = api_client.patch(url, data)
+        response = api_client.put(url, data)
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -63,7 +63,7 @@ class TestCustomers:
         url = reverse('customer-detail', kwargs={'pk': customer1.id})
         data = {'phone': '987654321'}
 
-        response = api_client.patch(url, data)
+        response = api_client.put(url, data)
 
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
@@ -73,7 +73,7 @@ class TestCustomers:
         data = {'phone': '987654321'}
 
         api_client.force_authenticate(user=customer.user)
-        response = api_client.patch(url, data)
+        response = api_client.put(url, data)
 
         assert response.status_code == status.HTTP_200_OK
 

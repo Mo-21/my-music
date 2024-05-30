@@ -21,7 +21,7 @@ class CustomerViewSet(ModelViewSet):
             return [IsAuthenticated()]
         return [IsAdminUser()]
 
-    @action(detail=False, methods=['GET', 'PATCH'], permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
         customer = Customer.objects.select_related('user').get(
             user_id=request.user.id
@@ -29,7 +29,7 @@ class CustomerViewSet(ModelViewSet):
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
             return Response(serializer.data)
-        elif request.method == 'PATCH':
+        elif request.method == 'PUT':
             serializer = CustomerSerializer(customer, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
