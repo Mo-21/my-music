@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import NotAuthenticated
 from .permissions import IsOwnerOrReadOnly
 from .pagination import CustomPagination
 from .serializers import CustomerSerializer, PostSerializer
@@ -41,10 +42,14 @@ class PostViewSet(ModelViewSet):
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
+        user = self.request.user
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+
+        if user.is_superuser:
             return Post.objects.select_related('author__user').all()
 
-        customer = self.request.user.customer
+        customer = user.customer
         following_ids = Follower.objects.filter(
             follower_user=customer).values_list('following_user_id', flat=True)
 
@@ -53,4 +58,9 @@ class PostViewSet(ModelViewSet):
         )
 
     def get_serializer_context(self):
-        return {'author_id': self.request.user.customer.id}
+        user = self.request.user
+
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+
+        return {'author_id': user.customer.id}
