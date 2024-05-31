@@ -2,7 +2,10 @@ from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, CreateModelMixin
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 from .pagination import CustomPagination
+from .filters import SongFilter
 from .models import Genre, Artist, Song, Playlist, PlaylistItem
 from .serializers import (GenreSerializer, ArtistSerializer, SongSerializer, SongWithNewArtistSerializer,
                           PlaylistSerializer, PlaylistItemSerializer)
@@ -12,12 +15,16 @@ class GenreMixin(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
 
 
 class ArtistMixin(ListModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = Artist.objects.all()
     serializer_class = ArtistSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [SearchFilter]
+    search_fields = ['name']
 
 
 class SongViewSet(ModelViewSet):
@@ -25,7 +32,11 @@ class SongViewSet(ModelViewSet):
         'genre').select_related('artist').all()
     serializer_class = SongSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = [CustomPagination]
+    pagination_class = CustomPagination
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['title']
+    ordering_fields = ['created_at']
+    filterset_class = SongFilter
 
     def get_serializer_context(self):
         user = self.request.user
