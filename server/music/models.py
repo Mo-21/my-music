@@ -42,7 +42,7 @@ class Song(models.Model):
                 audio = mp3.MP3(self.item)
                 self.duration = audio.info.length
             elif self.item.name.endswith('.wav'):
-                audio = wave.Wave(self.item)
+                audio = wave.WAVE(self.item)
                 self.duration = audio.info.length
         super().save(*args, **kwargs)
 
