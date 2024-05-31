@@ -1,6 +1,8 @@
+from typing import Iterable
 from django.db import models
 from django.conf import settings
 from django.core.validators import FileExtensionValidator
+from mutagen import mp3, wave
 
 
 class Genre(models.Model):
@@ -22,7 +24,7 @@ class Artist(models.Model):
 
 class Song(models.Model):
     title = models.CharField(max_length=255)
-    duration = models.SmallIntegerField()
+    duration = models.SmallIntegerField(null=True, blank=True)
     item = models.FileField(upload_to='music/songs', validators=[
                             FileExtensionValidator(allowed_extensions=['mp3', 'wav'])])
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
@@ -33,6 +35,16 @@ class Song(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.item and not self.duration:
+            if self.item.name.endswith('.mp3'):
+                audio = mp3.MP3(self.item)
+                self.duration = audio.info.length
+            elif self.item.name.endswith('.wav'):
+                audio = wave.Wave(self.item)
+                self.duration = audio.info.length
+        super().save(*args, **kwargs)
 
 
 class Playlist(models.Model):

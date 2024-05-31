@@ -16,6 +16,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 
 class SongSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(read_only=True)
+    duration = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Song

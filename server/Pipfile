@@ -15,6 +15,7 @@ migrate = "*"
 django-cors-headers = "*"
 drf-nested-routers = "*"
 django-filter = "*"
+mutagen = "*"
 
 [dev-packages]
 pytest = "*"
