@@ -38,3 +38,18 @@ class Follower(models.Model):
     following_user = models.ForeignKey(
         Customer, on_delete=models.CASCADE, related_name='followings')
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Like(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
