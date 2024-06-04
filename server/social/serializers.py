@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from .models import Customer, Post, Follower, Comment
+from django.db.models import Q
+from .models import Customer, Post, Follower, Comment, Like
 
 
 User = get_user_model()
@@ -38,7 +40,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'content', 'image',
-                  'author', 'likes_count', 'comments_count', 
+                  'author', 'likes_count', 'comments_count',
                   'comments', 'created_at']
 
     def create(self, validated_data):
@@ -58,3 +60,31 @@ class FollowerSerializer(serializers.ModelSerializer):
         if follower_user_id == validated_data['following_user'].id:
             raise serializers.ValidationError('You cannot follow yourself')
         return Follower.objects.create(follower_user_id=follower_user_id, **validated_data)
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ['id', 'user', 'post', 'created_at']
+        read_only_fields = ['created_at', 'user']
+
+    def create(self, validated_data):
+        customer_id = self.context['user_id']
+        customer = Customer.objects.get(id=customer_id)
+
+        if Like.objects.filter(user_id=customer_id, **validated_data).exists():
+            raise serializers.ValidationError('You already liked this object')
+
+        post_id = validated_data.get('post').id
+        if not self.is_post_in_feed(customer, post_id):
+            raise ValidationError('You cannot like this post')
+
+        return Like.objects.create(user_id=customer_id, **validated_data)
+
+    def is_post_in_feed(self, customer, post_id):
+        following_ids = Follower.objects.filter(
+            follower_user=customer).values_list('following_user_id', flat=True)
+
+        return Post.objects.filter(
+            Q(id=post_id) & (Q(author=customer) | Q(author_id__in=following_ids))
+        ).exists()
