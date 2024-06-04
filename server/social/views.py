@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Count
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
@@ -47,15 +47,21 @@ class PostViewSet(ModelViewSet):
             raise NotAuthenticated('User is not authenticated')
 
         if user.is_superuser:
-            return Post.objects.select_related('author__user').all()
+            return Post.objects \
+                .select_related('author__user') \
+                .all()
 
         customer = user.customer
         following_ids = Follower.objects.filter(
             follower_user=customer).values_list('following_user_id', flat=True)
 
-        return Post.objects.select_related('author__user').filter(
-            Q(author=customer) | Q(author_id__in=following_ids)
-        )
+        return Post.objects \
+            .select_related('author__user') \
+            .filter(Q(author=customer) | Q(author_id__in=following_ids)) \
+            .annotate(likes_count=Count('likes')) \
+            .annotate(comments_count=Count('comments')) \
+            .prefetch_related('comments') \
+
 
     def get_serializer_context(self):
         user = self.request.user
