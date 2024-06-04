@@ -1,13 +1,13 @@
 from django.db.models import Q, Count
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, ListModelMixin
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotAuthenticated
 from .permissions import IsOwnerOrReadOnly
 from .pagination import CustomPagination
-from .serializers import CustomerSerializer, PostSerializer, FollowerSerializer, LikeSerializer
+from .serializers import CustomerSerializer, PostSerializer, FollowerSerializer, LikeSerializer, CommentSerializer
 from .models import Customer, Post, Follower, Like, Comment
 
 
@@ -94,16 +94,32 @@ class FollowerViewSet(ModelViewSet):
 
 
 class LikeMixin(CreateModelMixin, ListModelMixin, DestroyModelMixin, GenericViewSet):
-    permission_classes = [IsAuthenticated]
     serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         if self.request.method == 'GET':
-            return Like.objects.filter(post=self.request.query_params.get('post_id'))
+            return Like.objects.filter(post=self.kwargs['post_pk'])
         return Like.objects.filter(user=self.request.user.customer)
 
     def get_serializer_context(self):
         user = self.request.user
         if not user.is_authenticated:
             raise NotAuthenticated('User is not authenticated')
-        return {'user_id': user.customer.id}
+        return {'user_id': user.customer.id, 'post_id': self.kwargs['post_pk']}
+
+
+class CommentViewSet(ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            return Comment.objects.filter(post=self.kwargs['post_pk'])
+        return Comment.objects.filter(user=self.request.user.customer)
+
+    def get_serializer_context(self):
+        user = self.request.user
+        if not user.is_authenticated:
+            raise NotAuthenticated('User is not authenticated')
+        return {'user_id': user.customer.id, 'post_id': self.kwargs['post_pk']}
