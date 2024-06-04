@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from tags.models import TaggedItem
+from tags.serializers import TaggedItemSerializer
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+
+
