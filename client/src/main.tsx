@@ -4,11 +4,14 @@ import App from "./App.tsx";
 import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./index.css";
+import ReactQueryProviders from "./providers/ReactQueryProviders.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Theme accentColor="green">
-      <App />
-    </Theme>
+    <ReactQueryProviders>
+      <Theme accentColor="green">
+        <App />
+      </Theme>
+    </ReactQueryProviders>
   </React.StrictMode>
 );
