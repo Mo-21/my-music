@@ -19,11 +19,13 @@ export const usePosts = () =>
     queryKey: ["posts"],
     queryFn: fetchPosts,
     getNextPageParam: (lastPage) => lastPage.next || undefined,
-    initialPageParam: "/social/posts?limit=10",
+    initialPageParam: "http://localhost:5173/social/posts?limit=10",
   });
 
 const fetchPosts = async ({ pageParam }: { pageParam: unknown }) => {
   const url =
-    typeof pageParam === "string" ? pageParam : "/social/posts?limit=10";
+    typeof pageParam === "string"
+      ? pageParam
+      : "http://localhost:5173/social/posts?limit=10";
   return await axios.get<InfinitePosts>(url).then((res) => res.data);
 };
