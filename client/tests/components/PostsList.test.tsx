@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Posts from "../../src/components/Posts";
+import PostsList from "../../src/components/PostsList";
 import { Membership, Post } from "../../src/types/socialTypes";
 
 describe("Posts", () => {
@@ -19,7 +19,7 @@ describe("Posts", () => {
         created_at: "2021-10-10",
       },
     ];
-    render(<Posts posts={posts} />);
+    render(<PostsList posts={posts} />);
 
     const feed = screen.getByRole("feed");
     expect(feed).toBeInTheDocument();

@@ -1,7 +1,7 @@
 import { Flex, Text, Card, Heading, Avatar } from "@radix-ui/themes";
 import { Post } from "../types/socialTypes";
 
-const Posts = ({ posts }: { posts: Post[] }) => {
+const PostsList = ({ posts }: { posts: Post[] }) => {
   return (
     <>
       {posts.map((post) => (
@@ -27,4 +27,4 @@ const Posts = ({ posts }: { posts: Post[] }) => {
   );
 };
 
-export default Posts;
+export default PostsList;
