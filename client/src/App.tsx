@@ -1,7 +1,11 @@
-import { Heading } from "@radix-ui/themes";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
-  return <Heading>Hello</Heading>;
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
 };
 
 export default App;
