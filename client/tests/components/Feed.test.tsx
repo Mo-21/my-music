@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { db } from "../mocks/db";
-import HomePage from "../../src/pages/HomePage";
-import AllProviders from "./AllProviders";
+import AllProviders from "../pages/AllProviders";
+import Feed from "../../src/components/Feed";
 
-describe("HomePage", () => {
+describe("Feed", () => {
   const postIds: number[] = [];
 
   beforeAll(() => {
@@ -18,7 +18,7 @@ describe("HomePage", () => {
   });
 
   it("should render posts", async () => {
-    render(<HomePage />, { wrapper: AllProviders });
+    render(<Feed />, { wrapper: AllProviders });
 
     const posts = await screen.findAllByRole("feed");
     expect(posts.length).toBeGreaterThan(0);
