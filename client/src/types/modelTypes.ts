@@ -11,7 +11,15 @@ export interface Customer {
   phone: string;
   birthDate: string;
   membership_status: Membership;
-  profileImage: string;
+  profile_image: string;
+  user: User;
+}
+
+export interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
 }
 
 enum Membership {
