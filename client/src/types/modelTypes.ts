@@ -22,7 +22,7 @@ export interface User {
   email: string;
 }
 
-enum Membership {
+export enum Membership {
   Regular = "R",
   Prime = "P",
 }
