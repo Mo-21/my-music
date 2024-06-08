@@ -17,11 +17,13 @@ interface ReactQueryTData {
 export const usePosts = () =>
   useInfiniteQuery<InfinitePosts, Error, ReactQueryTData, [string]>({
     queryKey: ["posts"],
-    queryFn: async ({ pageParam }) => {
-      const url =
-        typeof pageParam === "string" ? pageParam : "/social/posts?limit=10";
-      return await axios.get<InfinitePosts>(url).then((res) => res.data);
-    },
+    queryFn: fetchPosts,
     getNextPageParam: (lastPage) => lastPage.next || undefined,
     initialPageParam: "/social/posts?limit=10",
   });
+
+const fetchPosts = async ({ pageParam }: { pageParam: unknown }) => {
+  const url =
+    typeof pageParam === "string" ? pageParam : "/social/posts?limit=10";
+  return await axios.get<InfinitePosts>(url).then((res) => res.data);
+};
