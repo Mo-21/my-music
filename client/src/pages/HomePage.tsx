@@ -8,8 +8,6 @@ const HomePage = () => {
   if (error) return <Container>Error: {error.message}</Container>;
   if (isLoading) return <Container>Loading...</Container>;
 
-  console.log(data);
-
   return (
     <Container>
       <Box className="prose">
