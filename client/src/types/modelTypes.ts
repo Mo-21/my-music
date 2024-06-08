@@ -3,14 +3,14 @@ export interface Post {
   content: string;
   image?: string;
   author: Customer;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface Customer {
   id: number;
   phone: string;
   birthDate: string;
-  membership: Membership;
+  membership_status: Membership;
   profileImage: string;
 }
 
