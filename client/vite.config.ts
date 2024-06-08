@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/social": "http://127.0.0.1:8000",
+      "/music": "http://127.0.0.1:8000",
     },
   },
 });
