@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Posts from "../../src/components/Posts";
-import { Membership, Post } from "../../src/types/modelTypes";
+import { Membership, Post } from "../../src/types/socialTypes";
 
 describe("Posts", () => {
   it("should render posts lists", () => {

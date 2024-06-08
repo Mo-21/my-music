@@ -1,5 +1,5 @@
 import { Flex, Text, Card, Heading, Avatar } from "@radix-ui/themes";
-import { Post } from "../types/modelTypes";
+import { Post } from "../types/socialTypes";
 
 const Posts = ({ posts }: { posts: Post[] }) => {
   return (

@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { Post } from "../types/modelTypes";
+import { Post } from "../types/socialTypes";
 
 interface InfinitePosts {
   count: number;
