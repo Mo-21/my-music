@@ -15,10 +15,13 @@ interface ReactQueryTData {
 }
 
 export const usePosts = () =>
-  useInfiniteQuery<InfinitePosts, Error, ReactQueryTData>({
+  useInfiniteQuery<InfinitePosts, Error, ReactQueryTData, [string]>({
     queryKey: ["posts"],
-    queryFn: async () =>
-      await axios.get<InfinitePosts>("/social/posts").then((res) => res.data),
-    getNextPageParam: (lastPage) => lastPage.next ?? false,
-    initialPageParam: 1,
+    queryFn: async ({ pageParam }) => {
+      const url =
+        typeof pageParam === "string" ? pageParam : "/social/posts?limit=10";
+      return await axios.get<InfinitePosts>(url).then((res) => res.data);
+    },
+    getNextPageParam: (lastPage) => lastPage.next || undefined,
+    initialPageParam: "/social/posts?limit=10",
   });
