@@ -1,13 +1,10 @@
-import { Box } from "@radix-ui/themes";
 import Feed from "../components/Feed";
+import Navbar from "../components/Navbar";
 
 const HomePage = () => {
   return (
     <>
-      <Box className="prose">
-        <h1>Home Page</h1>
-        <p>Welcome to the home page</p>
-      </Box>
+      <Navbar />
       <Feed />
     </>
   );
