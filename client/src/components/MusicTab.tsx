@@ -8,9 +8,11 @@ const MusicTab = () => {
   if (error) return <Text>Error: {error.message}</Text>;
   if (isLoading) return <Spinner size="3" />;
   return (
-    <Container>
-      <Flex direction="column">
-        {data && data.pages.length === 0 && <Text>No posts found</Text>}
+    <Container className="max-w-md mx-auto rounded-lg shadow">
+      <Flex className="flex-col gap-4 p-4" direction="column">
+        {data && data.pages.length === 0 && (
+          <Text className="text-gray-500">No music found</Text>
+        )}
         {data &&
           data.pages.map((group, i) => (
             <Flex mt="2" direction="column" gap="2" key={i}>
