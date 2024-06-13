@@ -4,7 +4,7 @@ import MusicTab from "./MusicTab";
 
 const Feed = () => {
   return (
-    <Flex>
+    <Flex justify="center" gap="2">
       <PostsTab />
       <MusicTab />
     </Flex>
