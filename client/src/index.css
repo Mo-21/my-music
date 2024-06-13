@@ -4,14 +4,15 @@
 
 /* Tailwind CSS styles for react-h5-audio-player component */
 .rhap_container {
-  @apply bg-green-500 text-white rounded-lg shadow-lg;
+  @apply bg-green-700 text-white rounded-lg shadow-lg;
 }
 
 .rhap_main-controls-button {
   @apply bg-green-700 hover:bg-green-800 text-white rounded-full;
 }
 
-.rhap_volume-button {
+.rhap_volume-button,
+.rhap_repeat-button {
   @apply text-green-200 hover:text-green-100;
 }
 
@@ -29,8 +30,4 @@
 
 .rhap_time {
   @apply text-green-100;
-}
-
-.rhap_repeat-button {
-  @apply text-green-200 hover:text-green-100;
 }
