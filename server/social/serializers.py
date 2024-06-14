@@ -41,8 +41,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     author = PostAuthorSerializer(read_only=True)
-    likes_count = serializers.IntegerField(read_only=True)
-    comments_count = serializers.IntegerField(read_only=True)
+    likes_count = serializers.IntegerField(
+        read_only=True, source='likes.count')
+    comments_count = serializers.IntegerField(
+        read_only=True, source='comments.count')
     comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
@@ -115,15 +117,11 @@ class CommentSerializer(serializers.ModelSerializer):
         customer_id = self.context['user_id']
         customer = Customer.objects.get(id=customer_id)
 
-        if Comment.objects.filter(user_id=customer_id, **validated_data).exists():
-            raise serializers.ValidationError(
-                'You already commented on this object')
-
         post_id = self.context['post_id']
         if not self.is_post_in_feed(customer, post_id):
             raise ValidationError('You cannot comment on this post')
 
-        return Comment.objects.create(user_id=customer_id, **validated_data)
+        return Comment.objects.create(user_id=customer_id, post_id=post_id, ** validated_data)
 
     def update(self, instance, validated_data):
         if instance.user_id != self.context['user_id']:

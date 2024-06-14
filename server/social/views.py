@@ -60,9 +60,8 @@ class PostViewSet(ModelViewSet):
         return Post.objects \
             .select_related('author__user') \
             .filter(Q(author=customer) | Q(author_id__in=following_ids)) \
-            .annotate(likes_count=Count('likes')) \
-            .annotate(comments_count=Count('comments')) \
             .prefetch_related('comments') \
+            .prefetch_related('likes') \
 
 
     def get_serializer_context(self):
