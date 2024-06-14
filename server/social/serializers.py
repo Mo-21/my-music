@@ -20,7 +20,15 @@ class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ['id', 'user', 'profile_image',
-                  'phone', 'birthdate', 'membership_status']
+                  'phone', 'birthdate', 'membership_status', 'liked_posts']
+
+
+class PostAuthorSerializer(serializers.ModelSerializer):
+    user = LocalUserSerializer(read_only=True)
+
+    class Meta:
+        model = Customer
+        fields = ['id', 'user', 'profile_image', 'membership_status']
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -32,7 +40,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = CustomerSerializer(read_only=True)
+    author = PostAuthorSerializer(read_only=True)
     likes_count = serializers.IntegerField(read_only=True)
     comments_count = serializers.IntegerField(read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
