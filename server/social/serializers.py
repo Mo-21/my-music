@@ -78,13 +78,15 @@ class LikeSerializer(serializers.ModelSerializer):
         customer = Customer.objects.get(id=customer_id)
         post_id = self.context['post_id']
 
-        if Like.objects.filter(user_id=customer_id, post_id=post_id, **validated_data).exists():
-            raise serializers.ValidationError('You already liked this object')
+        like = Like.objects.filter(
+            user_id=customer_id, post_id=post_id, **validated_data)
+        if like.exists():
+            return like.delete()
 
         if not self.is_post_in_feed(customer, post_id):
             raise ValidationError('You cannot like this post')
 
-        return Like.objects.create(user_id=customer_id, post_id=post_id, ** validated_data)
+        return Like.objects.create(user_id=customer_id, post_id=post_id, **validated_data)
 
     def is_post_in_feed(self, customer, post_id):
         following_ids = Follower.objects.filter(
