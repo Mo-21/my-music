@@ -11,6 +11,7 @@ from .serializers import CustomerSerializer, PostSerializer, FollowerSerializer,
 from .models import Customer, Post, Follower, Like, Comment
 
 
+# TODO check liked_posts if causing additional sql queries
 class CustomerViewSet(ModelViewSet):
     queryset = Customer.objects.select_related('user').all()
     serializer_class = CustomerSerializer
