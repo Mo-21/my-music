@@ -9,7 +9,7 @@ interface InfinitePosts {
   results: Post[];
 }
 
-interface ReactQueryTData {
+export interface ReactQueryTData {
   pageParam: number[];
   pages: InfinitePosts[];
 }
