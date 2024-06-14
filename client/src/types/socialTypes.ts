@@ -5,6 +5,7 @@ export interface Post {
   author: PostAuthor;
   likes_count: number;
   comments_count: number;
+  comments: Comment[] | null;
   created_at: string;
 }
 
@@ -35,4 +36,11 @@ export interface User {
 export enum Membership {
   Regular = "R",
   Prime = "P",
+}
+
+export interface Comment {
+  id: number;
+  user: Customer;
+  text: string;
+  created_at: string;
 }
