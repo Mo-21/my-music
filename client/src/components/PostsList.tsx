@@ -1,5 +1,6 @@
-import { Flex, Text, Card, Heading, Avatar, Button } from "@radix-ui/themes";
+import { Flex, Text, Card, Heading, Avatar } from "@radix-ui/themes";
 import { Post } from "../types/socialTypes";
+import LikeButton from "./LikeButton";
 
 const PostsList = ({ posts }: { posts: Post[] }) => {
   return (
@@ -22,17 +23,13 @@ const PostsList = ({ posts }: { posts: Post[] }) => {
             <Text>{post.content}</Text>
             <Flex align="center" gap="4">
               <Text className="text-lg">{post.likes_count}</Text>
-              <LikeButton />
+              <LikeButton postId={post.id} />
             </Flex>
           </Flex>
         </Card>
       ))}
     </>
   );
-};
-
-const LikeButton = () => {
-  return <Button>Like</Button>;
 };
 
 export default PostsList;
