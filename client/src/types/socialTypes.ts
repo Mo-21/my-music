@@ -3,6 +3,8 @@ export interface Post {
   content: string;
   image?: string;
   author: Customer;
+  likes_count: number;
+  comments_count: number;
   created_at: string;
 }
 

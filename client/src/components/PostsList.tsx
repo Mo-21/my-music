@@ -1,12 +1,12 @@
-import { Flex, Text, Card, Heading, Avatar } from "@radix-ui/themes";
+import { Flex, Text, Card, Heading, Avatar, Button } from "@radix-ui/themes";
 import { Post } from "../types/socialTypes";
 
 const PostsList = ({ posts }: { posts: Post[] }) => {
   return (
     <>
       {posts.map((post) => (
-        <Card role="feed" className="h-40" key={post.id}>
-          <Flex direction="column" gap="3">
+        <Card role="feed" className="min-h-[10rem] mb-4" key={post.id}>
+          <Flex direction="column" gap="3" p="2">
             <Flex justify="between">
               <Flex gap="2">
                 <Avatar
@@ -20,11 +20,19 @@ const PostsList = ({ posts }: { posts: Post[] }) => {
               <Text>{post.created_at.split("T")[0]}</Text>
             </Flex>
             <Text>{post.content}</Text>
+            <Flex align="center" gap="4">
+              <Text className="text-lg">{post.likes_count}</Text>
+              <LikeButton />
+            </Flex>
           </Flex>
         </Card>
       ))}
     </>
   );
+};
+
+const LikeButton = () => {
+  return <Button>Like</Button>;
 };
 
 export default PostsList;
