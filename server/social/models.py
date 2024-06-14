@@ -20,6 +20,9 @@ class Customer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    liked_posts = models.ManyToManyField(
+        'Post', through='Like', related_name='liked_by')
+
     def __str__(self) -> str:
         return f'{self.user.first_name} {self.user.last_name}'
 
