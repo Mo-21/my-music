@@ -2,19 +2,27 @@ export interface Post {
   id: number;
   content: string;
   image?: string;
-  author: Customer;
+  author: PostAuthor;
   likes_count: number;
   comments_count: number;
   created_at: string;
 }
 
-export interface Customer {
+export interface PostAuthor {
   id: number;
-  phone: string;
-  birthDate: string;
   membership_status: Membership;
   profile_image: string;
   user: User;
+}
+
+export interface Customer {
+  id: number;
+  phone: string;
+  birthDate: string | null;
+  membership_status: Membership;
+  profile_image: string;
+  user: User;
+  liked_posts: number[];
 }
 
 export interface User {
