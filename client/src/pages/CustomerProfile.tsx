@@ -2,6 +2,7 @@ import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { useCurrentCustomer } from "../services/store";
 import PostsList from "../components/PostsList";
 import CustomerAvatar from "../components/CustomerAvatar";
+import MembershipBadge from "../components/MembershipBadge";
 
 const CustomerProfile = () => {
   const { customer } = useCurrentCustomer();
@@ -22,7 +23,7 @@ const CustomerProfile = () => {
           </Heading>
         </Flex>
         <Text>{customer.user.email}</Text>
-        <Text>{customer.membership_status}</Text>
+        <MembershipBadge membershipStatus={customer.membership_status} />
         <Text>{customer.phone}</Text>
         <Text>{customer.birthdate}</Text>
       </Flex>

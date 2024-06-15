@@ -3,6 +3,7 @@ import { Post } from "../types/socialTypes";
 import LikeButton from "./LikeButton";
 import CommentForm from "./CommentForm";
 import CustomerAvatar from "./CustomerAvatar";
+import MembershipBadge from "./MembershipBadge";
 
 // TODO: styles refactor for: 1) the comments section 2) the like button animation
 
@@ -45,6 +46,9 @@ const PostsList = ({ posts }: { posts: Post[] }) => {
                       fallback={c.user.user.first_name[0]}
                     />
                     <Text>{c.text}</Text>
+                    <MembershipBadge
+                      membershipStatus={c.user.membership_status}
+                    />
                   </Flex>
                 ))}
               </Flex>
