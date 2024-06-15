@@ -53,6 +53,7 @@ const PostStats = ({ post }: { post: Post }) => {
         <LikeButton postId={post.id} />
       </Flex>
       <Flex align="center" gap="4">
+        <Text>Comments</Text>
         <Text className="text-lg">{post.comments_count}</Text>
       </Flex>
     </Flex>
