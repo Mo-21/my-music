@@ -19,10 +19,11 @@ export interface PostAuthor {
 export interface Customer {
   id: number;
   phone: string;
-  birthDate: string | null;
+  birthdate: string | null;
   membership_status: Membership;
   profile_image: string;
   user: User;
+  authored_posts: Post[];
   liked_posts: number[];
 }
 
