@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <Flex justify="center" p="2">
       <MusicTab />
-      <Flex mt="2" px="2" direction="column">
+      <Flex mt="2" px="2" direction="column" className="w-full">
         <CreatePost />
         <PostsTab />
       </Flex>

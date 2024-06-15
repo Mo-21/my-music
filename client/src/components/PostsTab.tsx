@@ -1,12 +1,13 @@
-import { Button, Container, Flex, Spinner, Text } from "@radix-ui/themes";
+import { Button, Container, Flex, Text } from "@radix-ui/themes";
 import { usePosts } from "../hooks/usePosts";
 import PostsList from "./PostsList";
+import PostSkeleton from "./PostSkeleton";
 
 const PostsTab = () => {
   const { data, error, isLoading, hasNextPage, fetchNextPage } = usePosts();
 
   if (error) return <Text>Error: {error.message}</Text>;
-  if (isLoading) return <Spinner size="3" />;
+  if (isLoading) return <PostSkeleton />;
   return (
     <Container>
       <Flex direction="column">
