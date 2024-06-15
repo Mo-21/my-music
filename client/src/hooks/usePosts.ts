@@ -14,7 +14,8 @@ export interface ReactQueryTData {
   pages: InfinitePosts[];
 }
 
-const baseUrl = "http://localhost:5173/social/posts?limit=10";
+const baseUrl =
+  "http://localhost:5173/social/posts?limit=10&ordering=-created_at";
 
 export const usePosts = () =>
   useInfiniteQuery<InfinitePosts, Error, ReactQueryTData, [string]>({
