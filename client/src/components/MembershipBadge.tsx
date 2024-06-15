@@ -6,7 +6,7 @@ interface MembershipBadgeProps {
 
 const MembershipBadge = ({ membershipStatus }: MembershipBadgeProps) => {
   return (
-    <Badge color={membershipStatus === "P" ? "green" : "pink"}>
+    <Badge color={membershipStatus === "P" ? "yellow" : "green"}>
       {membershipStatus}
     </Badge>
   );
