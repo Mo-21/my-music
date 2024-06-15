@@ -12,7 +12,7 @@ const UserActionsDropdown = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content sideOffset={5} align="end">
         <DropdownMenu.Group>
-          <DropdownMenu.Item>
+          <DropdownMenu.Item className="cursor-pointer">
             <Link href="/profile">Profile</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
