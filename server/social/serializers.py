@@ -15,6 +15,7 @@ class LocalUserSerializer(serializers.ModelSerializer):
 
 
 class CustomerSerializer(serializers.ModelSerializer):
+    user = LocalUserSerializer(read_only=True)
     authored_posts = serializers.SerializerMethodField()
 
     class Meta:
