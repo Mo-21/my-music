@@ -8,8 +8,8 @@ const MusicTab = () => {
   if (error) return <Text>Error: {error.message}</Text>;
   if (isLoading) return <Spinner size="3" />;
   return (
-    <Container className="max-w-md mx-auto rounded-lg shadow">
-      <Flex className="flex-col gap-4 p-4" direction="column">
+    <Container className="max-w-md mx-auto">
+      <Flex gap="2" direction="column">
         {data && data.pages.length === 0 && (
           <Text className="text-gray-500">No music found</Text>
         )}
