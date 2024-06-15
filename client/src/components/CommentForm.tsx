@@ -21,7 +21,7 @@ const CommentForm = ({ postId }: { postId: number }) => {
       className="grid grid-cols-12 gap-2"
     >
       <TextArea ref={ref} placeholder="Comment" className="col-span-11" />
-      <Button className="h-full col-span-1">
+      <Button className="h-full col-span-1" variant="soft">
         <PaperPlaneIcon />
       </Button>
     </form>
