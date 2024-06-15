@@ -1,12 +1,13 @@
-import Feed from "../components/Feed";
-import Navbar from "../components/Navbar";
+import { Flex } from "@radix-ui/themes";
+import MusicTab from "../components/MusicTab";
+import PostsTab from "../components/PostsTab";
 
 const HomePage = () => {
   return (
-    <>
-      <Navbar />
-      <Feed />
-    </>
+    <Flex justify="center" gap="2">
+      <PostsTab />
+      <MusicTab />
+    </Flex>
   );
 };
 
