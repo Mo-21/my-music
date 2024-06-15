@@ -1,4 +1,4 @@
-import { DropdownMenu, Flex } from "@radix-ui/themes";
+import { DropdownMenu, Flex, Link } from "@radix-ui/themes";
 import CustomerAuthStatus from "./CustomerAuthStatus";
 
 const UserActionsDropdown = () => {
@@ -12,7 +12,7 @@ const UserActionsDropdown = () => {
       <DropdownMenu.Content sideOffset={5} align="end">
         <DropdownMenu.Group>
           <DropdownMenu.Item className="cursor-pointer">
-            Profile
+            <Link href="/profile">Profile</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item className="cursor-pointer">
             Settings
