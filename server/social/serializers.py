@@ -16,11 +16,17 @@ class LocalUserSerializer(serializers.ModelSerializer):
 
 class CustomerSerializer(serializers.ModelSerializer):
     user = LocalUserSerializer(read_only=True)
+    authored_posts = serializers.SerializerMethodField()
 
     class Meta:
         model = Customer
         fields = ['id', 'user', 'profile_image',
-                  'phone', 'birthdate', 'membership_status', 'liked_posts']
+                  'phone', 'birthdate', 'membership_status',
+                  'liked_posts', 'authored_posts']
+
+    def get_authored_posts(self, obj):
+        posts = Post.objects.filter(author=obj)
+        return PostSerializer(posts, many=True).data
 
 
 class PostAuthorSerializer(serializers.ModelSerializer):
