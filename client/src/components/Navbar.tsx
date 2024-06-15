@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from "@radix-ui/themes";
-import CustomerAuthStatus from "./CustomerAuthStatus";
+import UserActionsDropdown from "./UserActionsDropdown";
 
 const Navbar = () => {
   return (
@@ -9,7 +9,7 @@ const Navbar = () => {
     >
       <Box className="text-xl font-bold">My Music</Box>
       <Text>
-        <CustomerAuthStatus />
+        <UserActionsDropdown />
       </Text>
     </Flex>
   );
