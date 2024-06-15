@@ -1,4 +1,4 @@
-from django.db.models import Q, Prefetch
+from django.db.models import Q, Prefetch, Count
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -58,21 +58,25 @@ class PostViewSet(ModelViewSet):
         if not user.is_authenticated:
             raise NotAuthenticated('User is not authenticated')
 
+        queryset = Post.objects.select_related('author__user')
+
         if user.is_superuser:
-            return Post.objects \
-                .select_related('author__user') \
-                .all()
+            return queryset
+        else:
+            customer = user.customer
+            following_ids = Follower.objects.filter(
+                follower_user=customer).values_list('following_user_id', flat=True)
+            queryset = queryset.filter(
+                Q(author=customer) | Q(author_id__in=following_ids))
 
-        customer = user.customer
-        following_ids = Follower.objects.filter(
-            follower_user=customer).values_list('following_user_id', flat=True)
+        queryset = queryset.annotate(
+            likes_count=Count('likes', distinct=True),
+            comments_count=Count('comments', distinct=True)
+        )
 
-        return Post.objects \
-            .select_related('author__user') \
-            .filter(Q(author=customer) | Q(author_id__in=following_ids)) \
-            .prefetch_related('comments') \
-            .prefetch_related('likes') \
+        queryset = queryset.prefetch_related('comments', 'likes')
 
+        return queryset
 
     def get_serializer_context(self):
         user = self.request.user
