@@ -25,7 +25,9 @@ class CustomerSerializer(serializers.ModelSerializer):
                   'liked_posts', 'authored_posts']
 
     def get_authored_posts(self, obj):
-        posts = Post.objects.filter(author=obj)
+        posts = getattr(obj, 'authored_posts', None)
+        if posts is None:
+            return []
         return PostSerializer(posts, many=True).data
 
 

@@ -1,4 +1,4 @@
-from django.db.models import Q, Count
+from django.db.models import Q, Prefetch
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, ListModelMixin
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -13,7 +13,13 @@ from .models import Customer, Post, Follower, Like, Comment
 
 # TODO check liked_posts if causing additional sql queries
 class CustomerViewSet(ModelViewSet):
-    queryset = Customer.objects.select_related('user').all()
+    queryset = Customer.objects \
+        .select_related('user') \
+        .prefetch_related(
+            Prefetch('post_set', queryset=Post.objects.all(),
+                     to_attr='authored_posts')
+        )
+
     serializer_class = CustomerSerializer
 
     def get_permissions(self):
@@ -25,9 +31,13 @@ class CustomerViewSet(ModelViewSet):
 
     @action(detail=False, methods=['GET', 'PUT'], permission_classes=[IsAuthenticated])
     def me(self, request):
-        customer = Customer.objects.select_related('user').get(
-            user_id=request.user.id
-        )
+        customer = Customer.objects \
+            .select_related('user') \
+            .prefetch_related(
+                Prefetch('post_set', queryset=Post.objects.all(),
+                         to_attr='authored_posts')
+            ).get(user_id=request.user.id)
+
         if request.method == 'GET':
             serializer = CustomerSerializer(customer)
             return Response(serializer.data)
