@@ -1,5 +1,6 @@
 import { DropdownMenu, Flex, Link } from "@radix-ui/themes";
 import CustomerAuthStatus from "./CustomerAuthStatus";
+import LogoutButton from "./LogoutButton";
 
 const UserActionsDropdown = () => {
   return (
@@ -11,14 +12,11 @@ const UserActionsDropdown = () => {
       </DropdownMenu.Trigger>
       <DropdownMenu.Content sideOffset={5} align="end">
         <DropdownMenu.Group>
-          <DropdownMenu.Item className="cursor-pointer">
+          <DropdownMenu.Item>
             <Link href="/profile">Profile</Link>
           </DropdownMenu.Item>
-          <DropdownMenu.Item className="cursor-pointer">
-            Settings
-          </DropdownMenu.Item>
-          <DropdownMenu.Item className="cursor-pointer">
-            Logout
+          <DropdownMenu.Item>
+            <LogoutButton />
           </DropdownMenu.Item>
         </DropdownMenu.Group>
       </DropdownMenu.Content>

@@ -1,12 +1,14 @@
 import { Button, Spinner, TextField } from "@radix-ui/themes";
 import { useRef } from "react";
 import { useLogin } from "../hooks/useLogin";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   const { mutateAsync, isPending } = useLogin();
+  const nav = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +20,8 @@ const LoginForm = () => {
       username: usernameRef.current.value,
       password: passwordRef.current.value,
     });
+
+    nav("/");
   };
 
   return (
