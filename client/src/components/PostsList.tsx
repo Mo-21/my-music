@@ -4,6 +4,7 @@ import LikeButton from "./LikeButton";
 import CommentForm from "./CommentForm";
 import CustomerAvatar from "./CustomerAvatar";
 import MembershipBadge from "./MembershipBadge";
+import DeletePost from "./DeletePost";
 
 const PostsList = ({ posts }: { posts: Post[] }) => {
   return (
@@ -13,7 +14,10 @@ const PostsList = ({ posts }: { posts: Post[] }) => {
           <Flex direction="column" gap="3" p="2">
             <Flex justify="between">
               <CustomerDetails author={post.author} />
-              <Text>{post.created_at.split("T")[0]}</Text>
+              <Flex align="center" gap="4">
+                <DeletePost post={post} />
+                <Text>{post.created_at.split("T")[0]}</Text>
+              </Flex>
             </Flex>
             <Text>{post.content}</Text>
             <PostStats post={post} />
