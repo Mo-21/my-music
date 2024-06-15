@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Customer } from "../types/socialTypes";
 import { useCurrentCustomer } from "../services/store";
+import { axiosInstance } from "../services/axiosInstance ";
 
 export const useGetCurrentCustomer = () => {
   const setCustomer = useCurrentCustomer((c) => c.setCustomer);
@@ -9,7 +9,7 @@ export const useGetCurrentCustomer = () => {
   return useQuery<Customer, Error>({
     queryKey: ["current_customer"],
     queryFn: async () => {
-      const response = await axios
+      const response = await axiosInstance
         .get<Customer>("/social/customers/me/")
         .then((res) => res.data);
 

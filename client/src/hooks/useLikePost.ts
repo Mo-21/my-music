@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCurrentCustomer } from "../services/store";
 import { ReactQueryTData } from "./usePosts";
+import { axiosInstance } from "../services/axiosInstance ";
 
 interface LikeResponse {
   id: number;
@@ -25,7 +25,7 @@ export const useLikePost = (postId: number) => {
   >({
     mutationKey: ["post-like"],
     mutationFn: async () => {
-      return axios
+      return axiosInstance
         .post(`/social/posts/${postId}/likes/`)
         .then((res) => res.data);
     },

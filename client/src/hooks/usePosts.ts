@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Post } from "../types/socialTypes";
+import { axiosInstance } from "../services/axiosInstance ";
 
 interface InfinitePosts {
   count: number;
@@ -26,5 +26,5 @@ export const usePosts = () =>
 
 const fetchPosts = async ({ pageParam }: { pageParam: unknown }) => {
   const url = typeof pageParam === "string" ? pageParam : baseUrl;
-  return await axios.get<InfinitePosts>(url).then((res) => res.data);
+  return await axiosInstance.get<InfinitePosts>(url).then((res) => res.data);
 };

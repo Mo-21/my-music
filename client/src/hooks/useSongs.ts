@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { Song } from "../types/musicTypes";
+import { axiosInstance } from "../services/axiosInstance ";
 
 interface InfiniteSongs {
   count: number;
@@ -26,5 +26,5 @@ export const useSongs = () =>
 
 const fetchSongs = async ({ pageParam }: { pageParam: unknown }) => {
   const url = typeof pageParam === "string" ? pageParam : baseUrl;
-  return await axios.get<InfiniteSongs>(url).then((res) => res.data);
+  return await axiosInstance.get<InfiniteSongs>(url).then((res) => res.data);
 };

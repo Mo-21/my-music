@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Comment } from "../types/socialTypes";
 import { useCurrentCustomer } from "../services/store";
 import { ReactQueryTData } from "./usePosts";
+import { axiosInstance } from "../services/axiosInstance ";
 
 interface CommentDetails {
   text: string;
@@ -20,7 +20,7 @@ export const useCreateComment = () => {
   return useMutation<Comment, Error, CommentDetails, CommentContext>({
     mutationKey: ["comments"],
     mutationFn: async ({ text, postId }: CommentDetails) =>
-      await axios
+      await axiosInstance
         .post(`/social/posts/${postId}/comments/`, { text })
         .then((res) => res.data),
     onMutate: async ({ text, postId }) => {
