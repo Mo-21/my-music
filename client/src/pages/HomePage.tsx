@@ -4,7 +4,8 @@ import PostsTab from "../components/PostsTab";
 
 const HomePage = () => {
   return (
-    <Flex justify="center" gap="2">
+    <Flex justify="center" p="2">
+      <MusicTab />
       <PostsTab />
       <MusicTab />
     </Flex>
