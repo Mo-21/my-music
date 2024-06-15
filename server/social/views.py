@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotAuthenticated
+from rest_framework.filters import OrderingFilter
 from .permissions import IsOwnerOrReadOnly
 from .pagination import CustomPagination
 from .serializers import CustomerSerializer, PostSerializer, FollowerSerializer, LikeSerializer, CommentSerializer
@@ -51,6 +52,8 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPagination
+    filter_backends = [OrderingFilter]
+    ordering_fields = ['created_at']
 
     def get_queryset(self):
         user = self.request.user
