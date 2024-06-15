@@ -1,19 +1,20 @@
-import { Avatar, Text } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 import { useGetCurrentCustomer } from "../hooks/useGetCurrentCustomer";
+import CustomerAvatar from "./CustomerAvatar";
 
 const CustomerAuthStatus = () => {
   const { data: customer } = useGetCurrentCustomer();
 
   if (!customer) return null;
 
+  console.log(customer);
+
   return (
     <>
       <Text>{customer.user.first_name}</Text>
-      <Avatar
+      <CustomerAvatar
         src={customer.profile_image}
         fallback={customer.user.first_name[0]}
-        variant="solid"
-        size="2"
       />
     </>
   );

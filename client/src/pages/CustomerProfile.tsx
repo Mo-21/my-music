@@ -1,6 +1,7 @@
-import { Avatar, Flex, Grid, Heading, Text } from "@radix-ui/themes";
+import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { useCurrentCustomer } from "../services/store";
 import PostsList from "../components/PostsList";
+import CustomerAvatar from "../components/CustomerAvatar";
 
 const CustomerProfile = () => {
   const { customer } = useCurrentCustomer();
@@ -11,8 +12,8 @@ const CustomerProfile = () => {
     <Grid p="3" className="grid-cols-4">
       <Flex direction="column" gap="3" p="2" className="col-span-1">
         <Flex direction="column" gap="2">
-          <Avatar
-            src={"http://localhost:8000" + customer.profile_image}
+          <CustomerAvatar
+            src={customer.profile_image}
             fallback={customer.user.first_name[0]}
             size="7"
           />
