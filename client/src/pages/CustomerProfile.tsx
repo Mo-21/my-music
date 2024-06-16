@@ -3,6 +3,7 @@ import { useCurrentCustomer } from "../services/store";
 import PostsList from "../components/PostsList";
 import CustomerAvatar from "../components/CustomerAvatar";
 import MembershipBadge from "../components/MembershipBadge";
+import FollowingsList from "../components/FollowingsList";
 
 const CustomerProfile = () => {
   const { customer } = useCurrentCustomer();
@@ -23,9 +24,12 @@ const CustomerProfile = () => {
           </Heading>
         </Flex>
         <Text>{customer.user.email}</Text>
-        <MembershipBadge membershipStatus={customer.membership_status} />
+        <Flex>
+          <MembershipBadge membershipStatus={customer.membership_status} />
+        </Flex>
         <Text>{customer.phone}</Text>
         <Text>{customer.birthdate}</Text>
+        <FollowingsList />
       </Flex>
       <Flex direction="column" gap="3" p="2" className="col-span-2">
         <Heading size="3">Your Posts</Heading>
