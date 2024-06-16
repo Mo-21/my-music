@@ -90,7 +90,9 @@ class PostViewSet(ModelViewSet):
 
 
 class FollowerViewSet(ModelViewSet):
-    queryset = Follower.objects.all()
+    queryset = Follower.objects.select_related(
+        'follower_user', 'following_user')
+
     serializer_class = FollowerSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post', 'delete']
@@ -100,7 +102,7 @@ class FollowerViewSet(ModelViewSet):
         if not user.is_authenticated:
             raise NotAuthenticated('User is not authenticated')
 
-        return Follower.objects.filter(follower_user=user.customer)
+        return Follower.objects.select_related('follower_user', 'following_user').filter(follower_user=user.customer)
 
     def get_serializer_context(self):
         user = self.request.user
