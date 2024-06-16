@@ -1,4 +1,4 @@
-import { Flex, Heading } from "@radix-ui/themes";
+import { Flex, Heading, Text } from "@radix-ui/themes";
 import { useCustomerRelations } from "../hooks/useCustomerRelations";
 import { useMemo } from "react";
 import { useCurrentCustomer } from "../services/store";
@@ -32,10 +32,10 @@ const FollowingsList = () => {
               src={following.following_user.profile_image}
               fallback={following.following_user.user.first_name}
             />
-            <span>
+            <Text>
               {following.following_user.user.first_name}{" "}
               {following.following_user.user.last_name}
-            </span>
+            </Text>
           </Flex>
         ))}
       </Flex>
@@ -47,10 +47,10 @@ const FollowingsList = () => {
               src={follower.follower_user.profile_image}
               fallback={follower.follower_user.user.first_name}
             />
-            <span>
+            <Text>
               {follower.follower_user.user.first_name}{" "}
               {follower.follower_user.user.last_name}
-            </span>
+            </Text>
           </Flex>
         ))}
       </Flex>
