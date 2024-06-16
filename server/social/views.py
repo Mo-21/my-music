@@ -102,7 +102,12 @@ class FollowerViewSet(ModelViewSet):
         if not user.is_authenticated:
             raise NotAuthenticated('User is not authenticated')
 
-        return Follower.objects.select_related('follower_user', 'following_user').filter(follower_user=user.customer)
+        followers = Follower.objects.select_related(
+            'follower_user', 'following_user').filter(follower_user=user.customer)
+        followings = Follower.objects.select_related(
+            'follower_user', 'following_user').filter(following_user=user.customer)
+
+        return followers.union(followings)
 
     def get_serializer_context(self):
         user = self.request.user

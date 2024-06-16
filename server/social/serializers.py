@@ -70,7 +70,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class FollowerSerializer(serializers.ModelSerializer):
-    follower_user = serializers.PrimaryKeyRelatedField(read_only=True)
+    follower_user = CustomerSerializer(read_only=True)
     following_user = CustomerSerializer(read_only=True)
 
     class Meta:
