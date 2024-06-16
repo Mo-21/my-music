@@ -6,5 +6,5 @@ import CustomerProfile from "./pages/CustomerProfile";
 export const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/login", element: <Registration /> },
-  { path: "/profile", element: <CustomerProfile /> },
+  { path: "/profile/:customerId", element: <CustomerProfile /> },
 ]);

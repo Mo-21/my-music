@@ -5,6 +5,7 @@ import CommentForm from "./CommentForm";
 import CustomerAvatar from "./CustomerAvatar";
 import MembershipBadge from "./MembershipBadge";
 import DeletePost from "./DeletePost";
+import { Link } from "react-router-dom";
 
 const PostsList = ({ posts }: { posts: Post[] }) => {
   return (
@@ -13,7 +14,9 @@ const PostsList = ({ posts }: { posts: Post[] }) => {
         <Card role="feed" className="min-h-[10rem] mb-4" key={post.id}>
           <Flex direction="column" gap="3" p="2">
             <Flex justify="between">
-              <CustomerDetails author={post.author} />
+              <Link to={`/profile/${post.author.user.id}`}>
+                  <CustomerDetails author={post.author} />
+              </Link>
               <Flex align="center" gap="4">
                 <DeletePost post={post} />
                 <Text>{post.created_at.split("T")[0]}</Text>
