@@ -13,7 +13,7 @@ const LogoutButton = () => {
   return (
     <Button
       onClick={() => handleLogout()}
-      variant="ghost"
+      variant="solid"
       color="red"
       className="cursor-pointer"
     >
