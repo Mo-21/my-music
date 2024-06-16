@@ -1,23 +1,19 @@
-import { Text } from "@radix-ui/themes";
+import { Flex, Text } from "@radix-ui/themes";
 import { useGetCurrentCustomer } from "../hooks/useGetCurrentCustomer";
-import CustomerAvatar from "./CustomerAvatar";
-import { useCurrentCustomer } from "../services/store";
+import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
 const CustomerAuthStatus = () => {
   const { data: customer } = useGetCurrentCustomer();
-  const setCustomer = useCurrentCustomer((c) => c.setCustomer);
 
   if (!customer) return null;
-  setCustomer(customer);
 
   return (
-    <>
-      <Text>{customer.user.first_name}</Text>
-      <CustomerAvatar
-        src={customer.profile_image}
-        fallback={customer.user.first_name[0]}
-      />
-    </>
+    <Flex align="center" gap="4">
+      <Text className="text-green-300">{customer.user.first_name}</Text>
+      <Link to={`/profile/${customer.id}`}>Profile</Link>
+      <LogoutButton />
+    </Flex>
   );
 };
 
