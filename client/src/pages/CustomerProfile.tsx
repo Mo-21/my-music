@@ -4,11 +4,22 @@ import PostsList from "../components/PostsList";
 import CustomerAvatar from "../components/CustomerAvatar";
 import MembershipBadge from "../components/MembershipBadge";
 import FollowingsList from "../components/FollowingsList";
+import { useCustomerProfile } from "../hooks/useGetCurrentCustomer";
+import { useParams } from "react-router-dom";
 
 const CustomerProfile = () => {
-  const { customer } = useCurrentCustomer();
+  const { customerId } = useParams();
+  const { customer: currentCustomer } = useCurrentCustomer();
+  const {
+    data: customer,
+    isLoading,
+    isFetching,
+  } = useCustomerProfile({
+    customerId: parseInt(customerId!) || currentCustomer!.id,
+  });
 
-  if (!customer) return null;
+  if (!currentCustomer || !customer) return null;
+  if (isLoading || isFetching) return <Text>Loading...</Text>;
 
   return (
     <Grid p="3" className="grid-cols-4">
@@ -29,7 +40,7 @@ const CustomerProfile = () => {
         </Flex>
         <Text>{customer.phone}</Text>
         <Text>{customer.birthdate}</Text>
-        <FollowingsList />
+        {currentCustomer.id === customer.id && <FollowingsList />}
       </Flex>
       <Flex direction="column" gap="3" p="2" className="col-span-2">
         <Heading size="3">Your Posts</Heading>
