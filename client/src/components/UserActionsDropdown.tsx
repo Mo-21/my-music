@@ -1,6 +1,7 @@
-import { DropdownMenu, Flex, Link } from "@radix-ui/themes";
+import { DropdownMenu, Flex } from "@radix-ui/themes";
 import CustomerAuthStatus from "./CustomerAuthStatus";
 import LogoutButton from "./LogoutButton";
+import { Link } from "react-router-dom";
 
 const UserActionsDropdown = () => {
   return (
@@ -13,7 +14,7 @@ const UserActionsDropdown = () => {
       <DropdownMenu.Content sideOffset={5} align="end">
         <DropdownMenu.Group>
           <DropdownMenu.Item className="cursor-pointer">
-            <Link href="/profile">Profile</Link>
+            <Link to="/profile">Profile</Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
             <LogoutButton />
