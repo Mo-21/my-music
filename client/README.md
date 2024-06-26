@@ -1,30 +1,24 @@
-# React + TypeScript + Vite
+# My Music - Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend project is a simple social media application with music player that built with React and TypeScript. It allows users to listen to music, register and login easily, create posts, delete posts, add comments, like a post, and visit a profile.
 
-Currently, two official plugins are available:
+![mymusic-homepage](./public/mymusic-homepage.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Register and login: the user's session is managed with auth tokens using Djoser from the backend, key user details is saved in the session storage with `Zustand` to avoid many requests.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+![mymusic-homepage](./public/mymusic-register.png)
 
-- Configure the top-level `parserOptions` property like this:
+- Optimistic updates: with React Query v5, the updates are reflected directly and invalidated in the background.
+- Infinite scrolling
+- RadixUI components
+- Profile page: for each user that shows users posts, followers and followings.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+![mymusic-homepage](./public/mymusic-profile.png)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Contribution
+
+The project has a high potential to be developed and improved by adding extra features. It is good to note that there are many endpoints from the backend (such as: edit a post/comment, follow/unfollow user, change profile image...) that have not been used due to time constraints.
+
+They may be added by me in the future, till then, contributions are welcome.
